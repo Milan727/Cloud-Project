@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyStore - Cloud Storage</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="main-container">
+        <!-- Header Section -->
+        <header>
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fa-solid fa-cloud"></i> SkyStore
+                </div>
+                <button id="logoutBtn" class="logout-btn">Logout</button>
+            </div>
+            <p>Personal Cloud Storage</p>
+        </header>
+
+        <!-- Upload Section -->
+        <div class="upload-card">
+            <div class="drop-zone" onclick="triggerFileUpload()">
+                <div class="icon-container">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <h3>Click to Upload</h3>
+                <p>Select a file to store in the cloud</p>
+                <input type="file" id="fileInput" hidden>
+            </div>
+        </div>
+
+        <!-- File List Section -->
+        <div class="files-section">
+            <h4>My Files History</h4>
+            <div class="table-container">
+                <table id="fileTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Size</th>
+                            <th>Date Uploaded</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fileListBody">
+                        <tr>
+                            <td colspan="4" class="empty-state">Loading files from Cloud...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { monitorAuthState, logoutUser } from './auth.js';
+
+        // 1. Protect this route - Redirect to Login if not authenticated
+        monitorAuthState((user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            } else {
+                console.log('User authenticated:', user.email);
+            }
+        });
+
+        // 2. Logout Functionality
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            const result = await logoutUser();
+            if (!result.error) {
+                window.location.href = 'login.html';
+            } else {
+                alert('Logout Failed: ' + result.error);
+            }
+        });
+    </script>
+
+    <!-- 1. Load AWS SDK -->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1001.0.min.js"></script>
+    <!-- 2. Load Your Script -->
+    <script type="module" src="script.js"></script>
+
+</body>
+
+</html>

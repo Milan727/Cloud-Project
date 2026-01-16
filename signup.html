@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - SkyStore</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="auth-body">
+
+    <div class="auth-container">
+        <div class="logo">
+            <i class="fa-solid fa-cloud"></i> SkyStore
+        </div>
+        <h2>Create Account</h2>
+        <p class="subtitle">Start storing your files securely</p>
+
+        <form id="signupForm">
+            <div class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="email" placeholder="Email Address" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="auth-btn">Sign Up</button>
+        </form>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <button id="googleBtn" class="google-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+                alt="Google Logo">
+            Sign up with Google
+        </button>
+
+        <p class="auth-footer">
+            Already have an account? <a href="login.html">Login</a>
+        </p>
+
+        <p id="errorMessage" class="error-message"></p>
+    </div>
+
+    <script type="module">
+        import { signUpUser, googleSignIn, logoutUser, monitorAuthState } from './auth.js';
+
+        // Note: Removed auto-redirect to Index.html so new users can be redirected to login.html explicitly.
+
+        const signupForm = document.getElementById('signupForm');
+        const googleBtn = document.getElementById('googleBtn');
+        const errorMessage = document.getElementById('errorMessage');
+
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            errorMessage.textContent = 'Creating account...';
+            errorMessage.style.color = '#333'; // Neutral color for status message
+
+            const result = await signUpUser(email, password);
+            if (result.user) {
+                // User requested flow: Sign Up -> Login Page -> Index
+                // Firebase auto-logs in on sign up, so we must log out specifically.
+                await logoutUser();
+                alert('Account created successfully! Please login.');
+                window.location.href = 'login.html';
+            } else {
+                errorMessage.style.color = '#dc3545'; // Red for error
+                errorMessage.textContent = 'Error: ' + result.error;
+            }
+        });
+
+        googleBtn.addEventListener('click', async () => {
+            errorMessage.textContent = 'Connecting to Google...';
+            errorMessage.style.color = '#333';
+            const result = await googleSignIn();
+            if (result.user) {
+                // Google Sign In acts as Login, so we go straight to Index
+                window.location.href = 'Index.html';
+            } else {
+                errorMessage.style.color = '#dc3545';
+                errorMessage.textContent = 'Error: ' + result.error;
+            }
+        });
+    </script>
+</body>
+
+</html>

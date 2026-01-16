@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SkyStore</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="auth-body">
+
+    <div class="auth-container">
+        <div class="logo">
+            <i class="fa-solid fa-cloud"></i> SkyStore
+        </div>
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Login to your personal cloud</p>
+
+        <form id="loginForm">
+            <div class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="email" placeholder="Email Address" required>
+            </div>
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="auth-btn">Login</button>
+        </form>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <button id="googleBtn" class="google-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
+                alt="Google Logo">
+            Sign in with Google
+        </button>
+
+        <p class="auth-footer">
+            Don't have an account? <a href="signup.html">Sign Up</a>
+        </p>
+
+        <p id="errorMessage" class="error-message"></p>
+    </div>
+
+    <script type="module">
+        import { loginUser, googleSignIn, monitorAuthState } from './auth.js';
+
+        // Redirect if already logged in
+        monitorAuthState((user) => {
+            if (user) {
+                window.location.href = 'Index.html';
+            }
+        });
+
+        const loginForm = document.getElementById('loginForm');
+        const googleBtn = document.getElementById('googleBtn');
+        const errorMessage = document.getElementById('errorMessage');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            errorMessage.textContent = 'Logging in...';
+
+            const result = await loginUser(email, password);
+            if (result.user) {
+                window.location.href = 'Index.html';
+            } else {
+                errorMessage.textContent = 'Error: ' + result.error;
+            }
+        });
+
+        googleBtn.addEventListener('click', async () => {
+            errorMessage.textContent = 'Connecting to Google...';
+            const result = await googleSignIn();
+            if (result.user) {
+                window.location.href = 'Index.html';
+            } else {
+                errorMessage.textContent = 'Error: ' + result.error;
+            }
+        });
+    </script>
+</body>
+
+</html>
