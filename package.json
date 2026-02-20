@@ -2,6 +2,6 @@
     "name": "cloud-project",
     "version": "1.0.0",
     "scripts": {
-        "vercel-build": "echo \"export const AWS_CONFIG = { REGION: '${AWS_REGION}', BUCKET_NAME: '${AWS_BUCKET_NAME}', ACCESS_KEY: '${AWS_ACCESS_KEY}', SECRET_KEY: '${AWS_SECRET_KEY}' };\" > aws-config.js"
+        "build": "echo \"export const AWS_CONFIG = { REGION: '${AWS_REGION}', BUCKET_NAME: '${AWS_BUCKET_NAME}', ACCESS_KEY: '${AWS_ACCESS_KEY}', SECRET_KEY: '${AWS_SECRET_KEY}' };\" > aws-config.js && mkdir -p public && cp aws-config.js public/ && cp *.html *.css *.js public/"
     }
 }
