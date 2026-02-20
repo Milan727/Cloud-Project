@@ -49,6 +49,10 @@ window.triggerFileUpload = function () {
     fileInput.click();
 }
 
+fileInput.addEventListener('click', function (e) {
+    e.stopPropagation(); // Prevents the click from bubbling up to the drop-zone again
+});
+
 fileInput.addEventListener('change', function () {
     if (this.files.length > 0) {
         if (!currentUser) {
