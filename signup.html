@@ -62,7 +62,7 @@
             const password = document.getElementById('password').value;
 
             errorMessage.textContent = 'Creating account...';
-            errorMessage.style.color = '#333'; // Neutral color for status message
+            errorMessage.style.color = '#94a3b8'; // Neutral color for status message
 
             const result = await signUpUser(email, password);
             if (result.user) {
@@ -72,20 +72,20 @@
                 alert('Account created successfully! Please login.');
                 window.location.href = 'login.html';
             } else {
-                errorMessage.style.color = '#dc3545'; // Red for error
+                errorMessage.style.color = '#f87171'; // Red for error
                 errorMessage.textContent = 'Error: ' + result.error;
             }
         });
 
         googleBtn.addEventListener('click', async () => {
             errorMessage.textContent = 'Connecting to Google...';
-            errorMessage.style.color = '#333';
+            errorMessage.style.color = '#94a3b8';
             const result = await googleSignIn();
             if (result.user) {
                 // Google Sign In acts as Login, so we go straight to Index
                 window.location.href = 'Index.html';
             } else {
-                errorMessage.style.color = '#dc3545';
+                errorMessage.style.color = '#f87171';
                 errorMessage.textContent = 'Error: ' + result.error;
             }
         });
