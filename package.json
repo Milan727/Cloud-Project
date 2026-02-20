@@ -2,6 +2,6 @@
     "name": "cloud-project",
     "version": "1.0.0",
     "scripts": {
-        "build": "echo \"export const AWS_CONFIG = { REGION: '${AWS_REGION}', BUCKET_NAME: '${AWS_BUCKET_NAME}', ACCESS_KEY: '${AWS_ACCESS_KEY}', SECRET_KEY: '${AWS_SECRET_KEY}' };\" > aws-config.js && mkdir -p public && cp aws-config.js public/ && cp *.html *.css *.js public/"
+        "build": "echo \"export const AWS_CONFIG = { REGION: '${MY_AWS_REGION}', BUCKET_NAME: '${MY_AWS_BUCKET_NAME}', ACCESS_KEY: '${MY_AWS_ACCESS_KEY}', SECRET_KEY: '${MY_AWS_SECRET_KEY}' };\" > aws-config.js && mkdir -p public && cp aws-config.js public/ && cp *.html *.css *.js public/"
     }
 }
